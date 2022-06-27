@@ -17,7 +17,7 @@
             android:name=".OneView"
             android:exported="false" />
         <activity
-            android:name=".AddPudlication"
+            android:name=".AddPublication"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
