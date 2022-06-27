@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.socialnetwork.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), Adapter.Listener {
+
     lateinit var launcher: ActivityResultLauncher<Intent>
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     var adapter=Adapter(this)
     var data= mutableListOf<PublicationModel>()
 

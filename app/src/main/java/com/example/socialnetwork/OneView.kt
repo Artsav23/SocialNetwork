@@ -8,7 +8,8 @@ import android.widget.Toast
 import com.example.socialnetwork.databinding.ActivityOneViewBinding
 
 class OneView : AppCompatActivity() {
-    lateinit var binding: ActivityOneViewBinding
+
+    private lateinit var binding: ActivityOneViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,8 +17,8 @@ class OneView : AppCompatActivity() {
         setContentView(binding.root)
 
         val item=intent.getSerializableExtra("item") as PublicationModel
-        binding.imageView3.setImageResource(item.imageId)
-        binding.comments.text=item.comment
+        binding.image.setImageResource(item.imageId)
+        binding.commentsTextView.text=item.comment
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
