@@ -11,18 +11,18 @@ import com.example.socialnetwork.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), Adapter.Listener {
 
-    lateinit var launcher: ActivityResultLauncher<Intent>
+    private lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityMainBinding
-    var adapter=Adapter(this)
-    var data= mutableListOf<PublicationModel>()
+    private var adapter=Adapter(this)
+    private var data= mutableListOf<PublicationModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        launcher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                if (it.resultCode== RESULT_OK){
+        launcher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode== RESULT_OK) {
                     data.add(PublicationModel(it.data?.getStringExtra("imageId")?.toInt()!!,
                         it.data?.getStringExtra("comment")!!))
                     adapter.add(data[data.size-1])
@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
         }
 
         binding.bNavView.setOnItemSelectedListener {
-            when(it.itemId){
-               R.id.add->{
+            when(it.itemId) {
+               R.id.add-> {
                    val intent= Intent(this, AddPublication::class.java)
                     launcher.launch(intent)
                }
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
         return true
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         binding.recyclerView.adapter=adapter
         binding.recyclerView.layoutManager=LinearLayoutManager(this)
     }
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
         })
     }
 
-    private fun setSupportTitle(){
+    private fun setSupportTitle() {
         supportActionBar?.title="Message"
     }
 }

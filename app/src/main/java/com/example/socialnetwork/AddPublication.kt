@@ -11,7 +11,7 @@ import com.example.socialnetwork.databinding.ActivityAddPudlicationBinding
 class AddPublication : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddPudlicationBinding
-    private var images=Images()
+    private var images = Images()
     private var num = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class AddPublication : AppCompatActivity() {
         when (item.itemId){
 
             R.id.add->{
-                val data =Intent()
+                val data = Intent()
                 data.putExtra("imageId", images.images[num].toString())
                 data.putExtra("comment", "Comments: "+binding.comment.text.toString())
                     setResult(RESULT_OK, data)
@@ -48,14 +48,14 @@ class AddPublication : AppCompatActivity() {
         return true
     }
 
-    private fun setSupportActionBar(){
-        supportActionBar?.title="Add Publication"
+    private fun setSupportActionBar() {
+        supportActionBar?.title = "Add Publication"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    fun cancel(){
+    fun cancel() {
         if (num==0){
-            num=4
+            num = 4
         }
         else{
             num--
@@ -64,9 +64,9 @@ class AddPublication : AppCompatActivity() {
         binding.imageView.setImageResource(images.images[num])
     }
 
-    fun next(){
+    fun next() {
         if (num==4){
-            num=0
+            num = 0
         }
         else {
             num++

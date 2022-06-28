@@ -23,7 +23,7 @@ class OneView : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        var data = Intent()
+        val data = Intent()
         setResult(RESULT_CANCELED,data)
         finish()
         return true
