@@ -6,10 +6,10 @@ import com.example.socialnetwork.databinding.ViewBinding
 
 class ViewHolder(item: View): RecyclerView.ViewHolder(item) {
 
-    var num = 1
-    var binding= ViewBinding.bind(item)
+    private var num = 1
+    private var binding= ViewBinding.bind(item)
 
-    fun bind(publicationModel: PublicationModel, listener: Adapter.Listener){
+    fun bind(publicationModel: PublicationModel, listener: Adapter.Listener) {
         binding.image.setImageResource(publicationModel.imageId)
         binding.commentsTextView.text=publicationModel.comment
         itemView.setOnClickListener {

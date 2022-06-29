@@ -53,7 +53,7 @@ class AddPublication : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    fun cancel() {
+    private fun cancel() {
         if (num==0){
             num = 4
         }
@@ -64,7 +64,7 @@ class AddPublication : AppCompatActivity() {
         binding.imageView.setImageResource(images.images[num])
     }
 
-    fun next() {
+    private fun next() {
         if (num==4){
             num = 0
         }

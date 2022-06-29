@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.example.socialnetwork.databinding.ActivityOneViewBinding
 
-class OneView : AppCompatActivity() {
+class PublicationRecycleView : AppCompatActivity() {
 
     private lateinit var binding: ActivityOneViewBinding
 
@@ -15,11 +15,7 @@ class OneView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityOneViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val item=intent.getSerializableExtra("item") as PublicationModel
-        binding.image.setImageResource(item.imageId)
-        binding.commentsTextView.text=item.comment
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        fillingOutPublication()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -27,5 +23,12 @@ class OneView : AppCompatActivity() {
         setResult(RESULT_CANCELED,data)
         finish()
         return true
+    }
+
+    private fun fillingOutPublication(){
+        val item=intent.getSerializableExtra("item") as PublicationModel
+        binding.image.setImageResource(item.imageId)
+        binding.commentsTextView.text=item.comment
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }

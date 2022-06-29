@@ -21,24 +21,17 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        launcher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode== RESULT_OK) {
-                    data.add(PublicationModel(it.data?.getStringExtra("imageId")?.toInt()!!,
-                        it.data?.getStringExtra("comment")!!))
-                    adapter.add(data[data.size-1])
-                }
-        }
-
         binding.bNavView.setOnItemSelectedListener {
             when(it.itemId) {
                R.id.add-> {
-                   val intent= Intent(this, AddPublication::class.java)
+                   val intent = Intent(this, AddPublication::class.java)
                     launcher.launch(intent)
                }
             }
             true
         }
 
+        startActivityForResult()
         setSupportTitle()
         initRecyclerView()
     }
@@ -49,17 +42,27 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
     }
 
     private fun initRecyclerView() {
-        binding.recyclerView.adapter=adapter
-        binding.recyclerView.layoutManager=LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onClick(data: PublicationModel) {
-    startActivity(Intent(this, OneView::class.java).apply {
+    startActivity(Intent(this, PublicationRecycleView::class.java).apply {
         putExtra("item", data)
         })
     }
 
     private fun setSupportTitle() {
         supportActionBar?.title="Message"
+    }
+
+    private fun startActivityForResult(){
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                data.add(PublicationModel(it.data?.getStringExtra("imageId")?.toInt()!!,
+                    it.data?.getStringExtra("comment")!!))
+                adapter.add(data[data.size-1])
+            }
+        }
     }
 }
