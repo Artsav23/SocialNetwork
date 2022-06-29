@@ -14,6 +14,8 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
     private lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityMainBinding
     private var adapter = Adapter(this)
+    private var imageId = R.drawable.ic_add
+    private var comment = ""
     private var data = mutableListOf<PublicationModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,8 +61,13 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
     private fun startActivityForResult(){
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-                data.add(PublicationModel(it.data?.getStringExtra("imageId")?.toInt()!!,
-                    it.data?.getStringExtra("comment")!!))
+                if (!it.data?.getStringExtra("imageId").isNullOrEmpty()){
+                    imageId = it.data?.getStringExtra("imageId")!!.toInt()
+                }
+                if (!it.data?.getStringExtra("comment").isNullOrEmpty()){
+                    comment = it.data?.getStringExtra("comment")!!
+                }
+                data.add(PublicationModel(imageId, comment))
                 adapter.add(data[data.size-1])
             }
         }
