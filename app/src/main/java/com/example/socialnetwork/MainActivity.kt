@@ -13,8 +13,8 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
 
     private lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityMainBinding
-    private var adapter=Adapter(this)
-    private var data= mutableListOf<PublicationModel>()
+    private var adapter = Adapter(this)
+    private var data = mutableListOf<PublicationModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
