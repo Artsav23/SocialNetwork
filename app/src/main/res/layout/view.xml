@@ -29,7 +29,7 @@
                 app:title="Messeger" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
                 android:background="#363A42"
@@ -86,7 +86,7 @@
                 app:title="Likes:0" />
 
             <TextView
-                android:id="@+id/comments"
+                android:id="@+id/commentsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
