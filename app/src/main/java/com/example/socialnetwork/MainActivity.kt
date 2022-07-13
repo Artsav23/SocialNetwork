@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
                     comment = it.data?.getStringExtra("comment")!!
                 }
                 data.add(PublicationModel(imageId, comment))
-                adapter.add(data[data.size-1])
+                //adapter.add(data[data.size-1])
             }
         }
     }
