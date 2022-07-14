@@ -26,10 +26,10 @@ class Adapter(private val listener: Listener): RecyclerView.Adapter<ViewHolder>(
         return publicationModels.count()
     }
 
-//    fun add (data: PublicationModel) {
-//        publicationModels.add(data)
-//        notifyDataSetChanged()
-//    }
+    fun add (data: PublicationModel) {
+        publicationModels.add(data)
+        notifyDataSetChanged()
+    }
 
     interface Listener {
         fun onClick(data: PublicationModel)
