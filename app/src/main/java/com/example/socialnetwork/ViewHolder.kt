@@ -11,7 +11,7 @@ class ViewHolder(item: View): RecyclerView.ViewHolder(item) {
 
     fun bind(publicationModel: PublicationModel, listener: Adapter.Listener) {
         binding.image.setImageResource(publicationModel.imageId)
-        binding.commentsTextView.text=publicationModel.comment
+        binding.commentsTextView.text = publicationModel.comment
         itemView.setOnClickListener {
             listener.onClick(publicationModel)
         }

@@ -14,9 +14,7 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
     private lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityMainBinding
     private var adapter = Adapter(this)
-    private var imageId = R.drawable.ic_add
-    private var comment = ""
-    private var data = mutableListOf<PublicationModel>()
+    private val viewModel = ViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +22,7 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
         setContentView(binding.root)
 
         binding.bNavView.setOnItemSelectedListener {
-            when(it.itemId) {
-               R.id.add-> {
-                   val intent = Intent(this, AddPublication::class.java)
-                    launcher.launch(intent)
-               }
-            }
+            viewModel.onClickNavViewButton(it.itemId, this, launcher)
             true
         }
 
@@ -55,21 +48,12 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
     }
 
     private fun setSupportTitle() {
-        supportActionBar?.title="Message"
+        supportActionBar?.title = viewModel.title
     }
 
-    private fun startActivityForResult(){
+    private fun startActivityForResult() {
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
-                if (!it.data?.getStringExtra("imageId").isNullOrEmpty()){
-                    imageId = it.data?.getStringExtra("imageId")!!.toInt()
-                }
-                if (!it.data?.getStringExtra("comment").isNullOrEmpty()){
-                    comment = it.data?.getStringExtra("comment")!!
-                }
-                data.add(PublicationModel(imageId, comment))
-                adapter.add(data[data.size-1])
-            }
+            viewModel.activityForResult(it, adapter)
         }
     }
 }
