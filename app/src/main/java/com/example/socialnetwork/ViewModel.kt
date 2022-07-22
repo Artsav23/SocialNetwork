@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class ViewModel {
 
-    val title = "Message"
+    val title = "Messenger"
     private var imageId = R.drawable.ic_add
     private var comment = ""
     private var data = mutableListOf<PublicationModel>()
