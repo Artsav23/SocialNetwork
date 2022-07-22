@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
 
     private fun setSupportTitle() {
         supportActionBar?.title = viewModel.title
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.mipmap.ic_launcher)
     }
 
     private fun startActivityForResult() {
