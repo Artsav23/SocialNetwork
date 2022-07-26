@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportFragmentManager.beginTransaction().replace(R.id.placeHolder, Publication(adapter)).commit()
 
         binding.bNavView.setOnItemSelectedListener {
             viewModel.onClickNavViewButton(it.itemId, this, launcher)
@@ -28,7 +29,6 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
 
         startActivityForResult()
         setSupportTitle()
-        initRecyclerView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -36,10 +36,7 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
         return true
     }
 
-    private fun initRecyclerView() {
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-    }
+
 
     override fun onClick(data: PublicationModel) {
     startActivity(Intent(this, PublicationRecycleView::class.java).apply {
