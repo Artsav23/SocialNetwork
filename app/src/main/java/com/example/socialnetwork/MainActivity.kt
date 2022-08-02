@@ -1,5 +1,6 @@
 package com.example.socialnetwork
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,23 +21,11 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportFragmentManager.beginTransaction().replace(R.id.placeHolder, Publication(adapter)).commit()
 
-        binding.bNavView.setOnItemSelectedListener {
-            viewModel.onClickNavViewButton(it.itemId, this, launcher)
-            true
-        }
-
+        viewModel.onClickNavViewButton(binding,supportActionBar, supportFragmentManager, adapter)
         startActivityForResult()
-        setSupportTitle()
+        setSupport()
     }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-
 
     override fun onClick(data: PublicationModel) {
     startActivity(Intent(this, PublicationRecycleView::class.java).apply {
@@ -44,10 +33,11 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
         })
     }
 
-    private fun setSupportTitle() {
+    private fun setSupport() {
         supportActionBar?.title = viewModel.title
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.mipmap.ic_launcher)
+        supportFragmentManager.beginTransaction().replace(R.id.placeHolder, Publication(adapter)).commit()
     }
 
     private fun startActivityForResult() {
@@ -55,4 +45,6 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
             viewModel.activityForResult(it, adapter)
         }
     }
+
+
 }

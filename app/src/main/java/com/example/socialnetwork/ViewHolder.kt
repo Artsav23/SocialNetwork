@@ -7,7 +7,7 @@ import com.example.socialnetwork.databinding.ViewBinding
 class ViewHolder(item: View): RecyclerView.ViewHolder(item) {
 
     private var num = 1
-    private var binding= ViewBinding.bind(item)
+    private var binding = ViewBinding.bind(item)
 
     fun bind(publicationModel: PublicationModel, listener: Adapter.Listener) {
         binding.image.setImageResource(publicationModel.imageId)
@@ -17,7 +17,7 @@ class ViewHolder(item: View): RecyclerView.ViewHolder(item) {
         }
 
         binding.like.setOnClickListener {
-            binding.textView2.text="Likes: "+ num.toString()
+            binding.textView2.text = "Likes: $num"
             num++
         }
     }

@@ -4,7 +4,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import com.example.socialnetwork.databinding.ActivityMainBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class ViewModel {
 
@@ -12,13 +17,30 @@ class ViewModel {
     private var imageId = R.drawable.ic_add
     private var comment = ""
     private var data = mutableListOf<PublicationModel>()
+    private val auth = Firebase.auth
 
-    fun  onClickNavViewButton(itemId: Int, packageContext: Context, launcher: ActivityResultLauncher<Intent>) {
-        when(itemId) {
-            R.id.add-> {
-                val intent = Intent(packageContext, AddPublication::class.java)
-                launcher.launch(intent)
+    fun onClickNavViewButton(binding: ActivityMainBinding, supportActionBar: ActionBar?,
+                             supportFragmentManager: FragmentManager, adapter: Adapter) {
+
+        binding.bNavView.setOnItemSelectedListener {
+            when (it.itemId) {
+
+                R.id.add -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.placeHolder, AddPublicationFragment(adapter)).commit()
+                    supportActionBar?.title = "Add Publication"
+                }
+
+                R.id.main -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.placeHolder, Publication(adapter)).commit()
+                    supportActionBar?.title = "Social Network"
+                }
+
+                R.id.account -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.placeHolder, AccountFragment.newInstance()).commit()
+                    supportActionBar?.title = auth.currentUser?.displayName
+                }
             }
+            true
         }
     }
 
