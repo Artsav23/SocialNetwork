@@ -6,8 +6,6 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.core.view.GravityCompat
 import com.example.socialnetwork.databinding.FragmentAccountBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +15,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
 
-class AccountFragment : Fragment() {
+class AccountFragment(private var adapter: Adapter): Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
@@ -30,6 +28,7 @@ class AccountFragment : Fragment() {
         binding = FragmentAccountBinding.inflate(inflater)
         auth = Firebase.auth
         storage = Firebase.storage
+
         return binding.root
     }
 
@@ -50,6 +49,7 @@ class AccountFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.openNavView -> binding.drawerLayout.openDrawer(GravityCompat.END)
+            android.R.id.home -> parentFragmentManager.beginTransaction().replace(R.id.placeHolder, Publication(adapter)).commit()
         }
         return super.onOptionsItemSelected(item)
 
@@ -69,7 +69,7 @@ class AccountFragment : Fragment() {
     }
 
     private fun uploadFile() {
-        var  pd = ProgressDialog(context)
+        val  pd = ProgressDialog(context)
         pd.setTitle("Wait..")
         pd.show()
         storage.reference.child("avatars/" + auth.currentUser?.uid).getBytes(1024*1024).addOnSuccessListener {
@@ -80,11 +80,5 @@ class AccountFragment : Fragment() {
             .addOnFailureListener{
                 pd.dismiss()
             }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            AccountFragment()
     }
 }

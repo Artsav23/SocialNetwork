@@ -13,7 +13,7 @@ class PublicationRecycleView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityOneViewBinding.inflate(layoutInflater)
+        binding = ActivityOneViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
         fillingOutPublication()
     }
@@ -26,8 +26,8 @@ class PublicationRecycleView : AppCompatActivity() {
     }
 
     private fun fillingOutPublication(){
-        val item=intent.getSerializableExtra("item") as PublicationModel
-        binding.image.setImageResource(item.imageId)
+        val item = intent.getSerializableExtra("item") as PublicationModel
+        binding.image.setImageURI(item.imageId)
         binding.commentsTextView.text=item.comment
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

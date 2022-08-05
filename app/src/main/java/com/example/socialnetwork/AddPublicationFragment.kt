@@ -1,9 +1,10 @@
 package com.example.socialnetwork
 
-import android.app.ActionBar
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,7 +15,7 @@ class AddPublicationFragment(private val adapter: Adapter) : Fragment() {
 
    private lateinit var binding: FragmentAddPublictionBinding
    private lateinit var launcher: ActivityResultLauncher <Intent>
-   private  var image: Int = 0
+   private lateinit var image: Uri
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +27,6 @@ class AddPublicationFragment(private val adapter: Adapter) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        image = R.drawable.ic_add
         binding.btnChooseImage.setOnClickListener {
             launchGallery()
         }
@@ -45,27 +45,37 @@ class AddPublicationFragment(private val adapter: Adapter) : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.add -> {
-                val data = PublicationModel(image,
-                    "Comments: "+binding.commentEditText.text.toString())
-                adapter.add(data)
-                binding.photo.setImageResource(R.drawable.ic_add)
-                binding.commentEditText.text = null
+                try {
+                    val data = PublicationModel(
+                        image,
+                        "Comments: " + binding.commentEditText.text.toString()
+                    )
+                    adapter.add(data)
+                    binding.photo.setImageResource(R.drawable.ic_add)
+                    binding.commentEditText.text = null
+                    parentFragmentManager.beginTransaction().replace(R.id.placeHolder, Publication(adapter)).commit()
+
+                }
+                catch (e: Exception) {
+                    Toast.makeText(context, "Choose Photo", Toast.LENGTH_SHORT).show()
+                }
             }
+
         }
-        parentFragmentManager.beginTransaction().replace(R.id.placeHolder, Publication(adapter)).commit()
+
         return super.onOptionsItemSelected(item)
     }
 
     private fun launchGallery(){
-        val  intent = Intent( Intent.ACTION_PICK)
+        val  intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         launcher.launch(intent)
     }
 
     private fun changePhoto() {
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            binding.photo.setImageURI(it.data?.data)
-            image = binding.photo.toString().toInt()
+            image = Uri.parse(it.data?.data.toString())
+            binding.photo.setImageURI(image)
         }
     }
 }
