@@ -3,10 +3,8 @@ package com.example.socialnetwork
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.socialnetwork.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), Adapter.Listener {
@@ -14,31 +12,13 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
     private lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityMainBinding
     private var adapter = Adapter(this)
-    private val viewModel = ViewModel()
+    private lateinit var viewModel : ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.bNavView.setOnItemSelectedListener {
-            viewModel.onClickNavViewButton(it.itemId, this, launcher)
-            true
-        }
-
-        startActivityForResult()
-        setSupportTitle()
-        initRecyclerView()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    private fun initRecyclerView() {
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        initAllFun()
     }
 
     override fun onClick(data: PublicationModel) {
@@ -47,15 +27,19 @@ class MainActivity : AppCompatActivity(), Adapter.Listener {
         })
     }
 
-    private fun setSupportTitle() {
-        supportActionBar?.title = viewModel.title
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.mipmap.ic_launcher)
-    }
-
     private fun startActivityForResult() {
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            viewModel.activityForResult(it, adapter)
+            viewModel.activityForResult(it)
         }
     }
+
+    private fun initAllFun() {
+        viewModel = ViewModel(binding, supportActionBar, supportFragmentManager, adapter)
+        viewModel.onClickNavViewButtonMainActivity()
+        startActivityForResult()
+        viewModel.setSupport(viewModel)
+    }
+
+
+
 }

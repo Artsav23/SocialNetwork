@@ -12,10 +12,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 
 class Registration : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var storage: FirebaseStorage
+    private var avatar:  Uri? = null
     private lateinit var binding: ActivityRegistrationBinding
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
@@ -23,7 +27,9 @@ class Registration : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
         auth = Firebase.auth
+        storage = Firebase.storage
         setContentView(binding.root)
+        avatar = Uri.parse( binding.avatar.toString())
 
         endRegistration()
         chooseAvatar()
@@ -41,18 +47,21 @@ class Registration : AppCompatActivity() {
                 if (binding.password.text.count() < 8){
                     Toast.makeText(this, "Password should be a minimum 8 symbols", Toast.LENGTH_SHORT).show()
                 }
-                auth.createUserWithEmailAndPassword(binding.email.text.toString(), binding.password.text.toString()).addOnCompleteListener {
-                    if (!it.isSuccessful) {
+                else {
+                    auth.createUserWithEmailAndPassword(binding.email.text.toString(), binding.password.text.toString()).addOnCompleteListener {
+                        if (!it.isSuccessful) {
                         Toast.makeText(this, "Check Email", Toast.LENGTH_SHORT).show()
-                    }
-                    else {
-                        auth.currentUser?.updateProfile(userProfileChangeRequest {
-                            displayName = binding.name.text.toString()
-                            photoUri = Uri.parse(binding.avatar.toString())
-                        })
-                        Toast.makeText(this, "Complete", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this,  MainActivity::class.java))
-                        finish()
+                        }
+                        else {
+                            storage.reference.child("avatars/"+auth.currentUser?.uid).putFile(avatar!!)
+                            auth.currentUser?.updateProfile(userProfileChangeRequest {
+                                displayName = binding.name.text.toString()
+                                photoUri = Uri.parse(binding.avatar.toString())
+                                })
+                            Toast.makeText(this, "Complete", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this,  MainActivity::class.java))
+                            finish()
+                        }
                     }
                 }
             }
@@ -71,6 +80,7 @@ class Registration : AppCompatActivity() {
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if (it.resultCode == RESULT_OK){
                 binding.avatar.setImageURI(it.data?.data)
+                avatar = it.data?.data
             }
         }
     }
